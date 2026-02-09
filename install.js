@@ -2,33 +2,40 @@
 
 const { Pool } = require('pg');
 
-/* Create a local PostgreSQL connection pool
+// Local PostgreSQL connection pool
 const pool = new Pool({
     user: 'juliagustafsson',
     host: 'localhost',
-    database: 'todoDb',
+    database: 'blogDb', 
     password: '',
     port: 5432
-}); */
-
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false }
 });
 
+// Init database
 (async () => {
     try {
-        // Create todos table
+        // Create users table
         await pool.query(`
-            CREATE TABLE IF NOT EXISTS todos (
+            CREATE TABLE IF NOT EXISTS users (
                 id SERIAL PRIMARY KEY,
-                title VARCHAR(100) NOT NULL,
-                description VARCHAR(500) NOT NULL,
-                status VARCHAR(20) NOT NULL
-                 CHECK (status IN ('ej påbörjad', 'pågående', 'avklarad'))
+                username TEXT UNIQUE NOT NULL,
+                password TEXT NOT NULL
             )
         `);
-        console.log('Table "todos" has been created');
+
+        // Create posts table
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS posts (
+                id SERIAL PRIMARY KEY,
+                title TEXT NOT NULL,
+                content TEXT NOT NULL,
+                author TEXT NOT NULL,
+                created_at TIMESTAMP DEFAULT NOW(),
+                updated_at TIMESTAMP DEFAULT NOW()
+            )
+        `);
+
+        console.log('Tables "users" and "posts" have been created');
     } catch (err) {
         console.error('Error creating tables', err);
     }

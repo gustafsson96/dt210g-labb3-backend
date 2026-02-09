@@ -4,29 +4,22 @@ const Hapi = require('@hapi/hapi');
 const { Pool } = require('pg');
 
 // Import routes
-const todoRoutes = require('./routes/todoRoutes');
+const postRoutes = require('./routes/postRoutes'); 
 
-/* Local Postgres connection pool
+// Local Postgres connection pool
 const pool = new Pool({
     user: 'juliagustafsson',
     host: 'localhost',
-    database: 'todoDb',
-    password: '',
+    database: 'blogDb',
+    password: '',       
     port: 5432
-}); */
-
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false
-    }
 });
 
 const init = async () => {
 
     const server = Hapi.server({
-        port: process.env.PORT || 3000,
-        host: '0.0.0.0',
+        port: 3000, 
+        host: 'localhost',
         routes: {
             cors: {
                 origin: ['*'],
@@ -36,15 +29,14 @@ const init = async () => {
     });
 
     // Register routes
-    server.route(todoRoutes(pool));
+    server.route(postRoutes(pool));
 
     await server.start();
     console.log('Server running on %s', server.info.uri);
 };
 
 process.on('unhandledRejection', (err) => {
-
-    console.log(err);
+    console.error(err);
     process.exit(1);
 });
 
