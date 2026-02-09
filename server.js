@@ -4,6 +4,7 @@ const Hapi = require('@hapi/hapi');
 const { Pool } = require('pg');
 
 // Import routes
+const authRoutes = require('./routes/authRoutes');
 const postRoutes = require('./routes/postRoutes'); 
 
 // Local Postgres connection pool
