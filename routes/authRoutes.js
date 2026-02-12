@@ -7,7 +7,7 @@ module.exports = (pool) => [
     // Register new user
     {
         method: 'POST',
-        path: '/auth/register',
+        path: '/register',
         options: { auth: false },
         handler: async (request, h) => {
             const { username, password } = request.payload;
@@ -39,7 +39,7 @@ module.exports = (pool) => [
     // Login route
     {
         method: 'POST',
-        path: '/auth/login',
+        path: '/login',
         options: { auth: false },
         handler: async (request, h) => {
             const { username, password } = request.payload;
@@ -72,7 +72,7 @@ module.exports = (pool) => [
     // Get logged in user
     {
         method: 'GET',
-        path: '/auth/user',
+        path: '/user',
         options: {
             auth: false
         },
