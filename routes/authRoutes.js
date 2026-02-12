@@ -8,6 +8,7 @@ module.exports = (pool) => [
     {
         method: 'POST',
         path: '/auth/register',
+        options: { auth: false },
         handler: async (request, h) => {
             const { username, password } = request.payload;
 
@@ -39,6 +40,7 @@ module.exports = (pool) => [
     {
         method: 'POST',
         path: '/auth/login',
+        options: { auth: false },
         handler: async (request, h) => {
             const { username, password } = request.payload;
 
@@ -72,7 +74,7 @@ module.exports = (pool) => [
         method: 'GET',
         path: '/auth/user',
         options: {
-            auth: false 
+            auth: false
         },
         handler: async (request, h) => {
             const authHeader = request.headers.authorization;

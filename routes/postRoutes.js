@@ -3,10 +3,12 @@ module.exports = (pool) => [
     {
         method: 'GET',
         path: '/posts',
+        options: { auth: false },
         handler: async (request, h) => {
             try {
-                const query = 'SELECT * FROM posts ORDER BY created_at DESC';
-                const res = await pool.query(query);
+                const res = await pool.query(
+                    'SELECT * FROM posts ORDER BY created_at DESC'
+                );
                 return h.response(res.rows).code(200);
             } catch (err) {
                 console.error(err);
@@ -14,11 +16,11 @@ module.exports = (pool) => [
             }
         }
     },
-
     // GET single post
     {
         method: 'GET',
         path: '/posts/{id}',
+        options: { auth: false },
         handler: async (request, h) => {
             const { id } = request.params;
             try {
@@ -38,6 +40,7 @@ module.exports = (pool) => [
     {
         method: 'POST',
         path: '/posts',
+        options: { auth: 'jwt' },
         handler: async (request, h) => {
             const { title, content, author } = request.payload;
 
@@ -60,6 +63,7 @@ module.exports = (pool) => [
     {
         method: 'PUT',
         path: '/posts/{id}',
+        options: { auth: 'jwt' },
         handler: async (request, h) => {
             const { id } = request.params;
             const { title, content, author } = request.payload;
@@ -92,6 +96,7 @@ module.exports = (pool) => [
     {
         method: 'DELETE',
         path: '/posts/{id}',
+        options: { auth: 'jwt' },
         handler: async (request, h) => {
             const { id } = request.params;
 
