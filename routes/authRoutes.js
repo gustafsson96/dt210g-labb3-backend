@@ -3,7 +3,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-module.exports = (pool) => [
+module.exports = (pool, JWT_SECRET) => [
     // Register new user
     {
         method: 'POST',
@@ -58,10 +58,16 @@ module.exports = (pool) => [
                     return h.response({ error: 'Invalid username or password.' }).code(401);
                 }
 
-                // Create jwt
-                const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, { expiresIn: '1h' });
+            // Create JWT
+            const token = jwt.sign(
+                { id: user.id, username: user.username },
+                JWT_SECRET,
+                { expiresIn: '1h' }
+            );
 
-                return h.response({ token }).code(200);
+            // Return token and user info
+            return h.response({ token, user: { id: user.id, username: user.username }
+            }).code(200);
             } catch (err) {
                 console.error(err);
                 return h.response({ error: 'Failed to login.' }).code(500);

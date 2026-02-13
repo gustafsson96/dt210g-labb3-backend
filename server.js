@@ -56,7 +56,7 @@ const init = async () => {
 
     // Register routes
     server.route(postRoutes(pool));
-    server.route(authRoutes(pool));
+    server.route(authRoutes(pool, JWT_SECRET));
 
     await server.start();
     console.log('Server running on %s', server.info.uri);
