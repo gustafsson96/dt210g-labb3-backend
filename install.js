@@ -2,7 +2,7 @@
 
 const { Pool } = require('pg');
 
-// Local PostgreSQL connection pool
+/* Local PostgreSQL connection pool
 const pool = new Pool({
     user: 'juliagustafsson',
     host: 'localhost',
@@ -10,6 +10,15 @@ const pool = new Pool({
     password: '',
     port: 5432
 });
+*/
+
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    }
+});
+
 
 // Init database
 (async () => {

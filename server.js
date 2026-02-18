@@ -12,7 +12,7 @@ const postRoutes = require('./routes/postRoutes');
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
-// Local Postgres connection pool
+/* Local Postgres connection pool
 const pool = new Pool({
     user: 'juliagustafsson',
     host: 'localhost',
@@ -20,12 +20,20 @@ const pool = new Pool({
     password: '',       
     port: 5432
 });
+*/
+
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    }
+});
 
 const init = async () => {
 
     const server = Hapi.server({
         port: 3000, 
-        host: 'localhost',
+        host: '0.0.0.0',
         routes: {
             cors: {
                 origin: ['*'],
